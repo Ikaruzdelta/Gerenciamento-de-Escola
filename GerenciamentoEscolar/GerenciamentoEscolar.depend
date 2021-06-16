@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1623800661 source:c:\users\ikaruz\documents\projectscodeblocks\gerenciamento-de-escola\gerenciamentoescolar\main.cpp
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+

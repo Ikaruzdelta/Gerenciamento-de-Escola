@@ -175,6 +175,7 @@ int Verifica_Classe (tipoLista *lista, char *busca, int serie)
 
 // Funçao que busca e Classe e exibe as informaçoes dela
 
+
 int buscar_Classe (tipoLista *lista, char *busca, int serie)
 {
     tipoClasse *aux;
@@ -311,6 +312,7 @@ int inserir_Aluno_Classe_Vazia (tipoClasse *lista)
 
 
 }
+
 
 // funçao que faz a inserçao de um aluno no fim de uma lista de classe
 
@@ -494,7 +496,7 @@ void remover_Todos_Alunos (tipoClasse *lista)
 void remove_Classe_Inicio (tipoLista *lista)
 {
     tipoClasse *aux;
-    remover_Todos_Alunos(aux);
+
     aux = lista->inicioC;
     lista->inicioC = lista->inicioC->proxmaC;
     if (lista->quantl == 1)
@@ -512,7 +514,9 @@ void remove_Classe_Inicio (tipoLista *lista)
 void remover_Classe_fim (tipoLista *lista)
 {
     tipoClasse *aux, *ant;
-    remover_Todos_Alunos(aux);
+
+
+
     aux = lista->inicioC;
 
     if (aux->proxmaC != NULL)
@@ -543,41 +547,55 @@ void remover_Classe_fim (tipoLista *lista)
 void remover_Classe (tipoLista *lista,int serie, char *turma)
 {
     tipoClasse *aux, *aux2, *ant;
-
-    if (Aluno_vazia(aux))
-    {
-
-    }
-    else if (buscar_Classe(lista,turma,serie))
-    {
-
         aux = lista->inicioC;
         aux2 = lista->fimC;
+
+
+
+
+    if (buscar_Classe(lista,turma,serie))
+    {
+
         if (aux->serie == serie && strcmp(aux->turma,turma)==0 )
         {
+        if (!Aluno_vazia(aux))
+        {
+        remover_Todos_Alunos(aux);
+
+        }
             remove_Classe_Inicio(lista);
             cout << "Classe removida com sucesso "<< endl;
         }
         else if(aux2->serie == serie && strcmp(aux2->turma,turma)==0)
         {
+        if (!Aluno_vazia(aux2))
+        {
+        remover_Todos_Alunos(aux);
+
+        }
+
+
             remover_Classe_fim(lista);
             cout << "Classe removida com sucesso "<< endl;
         }
         else
         {
-            remover_Todos_Alunos(aux);
+
             while (aux != NULL)
             {
 
                 if(aux->serie == serie && strcmp(aux->turma,turma) == 0)
                 {
+                    if(!Aluno_vazia(aux)){
+                        remover_Todos_Alunos(aux);
 
+                    }
                     ant->proxmaC = aux->proxmaC;
 
                 }ant = aux;
                 aux = aux->proxmaC;
             }
-            remove_Classe_Inicio(lista);
+
             cout << "Classe removida com sucesso "<< endl;
             lista->quantl --;
             free(aux);
@@ -643,23 +661,6 @@ void exibir_Aluno (tipoClasse *lista)
 
 }
 
-//Verifica se uma classe especifica esta vazia
-
-int Verifica_V (tipoClasse *lista)
-{
-
-    tipoAluno *aux;
-
-    if (Aluno_vazia(lista))
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-
-}
 
 //Estrutura auxiliar pra buscar informaçoes
 
@@ -674,7 +675,7 @@ typedef struct infoAluno
 
 } Alunos;
 
-int menu();
+int menu ();
 
 int main()
 {
@@ -743,7 +744,7 @@ int main()
                 system("cls");
                 if (Verifica_Classe(&lista,a.busT,a.serie))
                 {
-
+                   if(!Aluno_vazia(buscar_Aluno(&lista,a.busT,a.serie))){
                     cout << "Informaçao do aluno"<< endl;
                     exibir_Aluno(buscar_Aluno(&lista,a.busT,a.serie));
                     cout << "*Informe a matricula do aluno que sera removido "<<endl;
@@ -757,7 +758,7 @@ int main()
                     {
                         remover_Aluno_Busca(buscar_Aluno(&lista,a.busT,a.serie),a.matricula);
                     }
-                }
+                }cout << "Nao ha nenhum aluno na classe"<< endl;}
             }
             fflush(stdin);
             system("pause");
@@ -778,7 +779,7 @@ int main()
                 cout << "\n*Informe a serie ::";
                 cin >> a.serie;
                 system("cls");
-                if (!Verifica_V(buscar_Aluno(&lista,a.busT,a.serie)))
+                if (!Aluno_vazia(buscar_Aluno(&lista,a.busT,a.serie)))
                 {
                     if (Verifica_Classe(&lista,a.busT,a.serie))
                     {
